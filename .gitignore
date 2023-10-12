@@ -1,0 +1,10 @@
+INCA_libs
+INCA_libs_gui
+xcelium.d
+*.log
+*.history
+cov_work
+.simvision
+*.pb
+*.key
+.project
