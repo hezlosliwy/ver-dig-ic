@@ -78,6 +78,8 @@ function shortint get_data();
 	    return 16'h3FFF;
     else if (data_case == 2'b011)
 	    return 16'hFFFF;
+    else if (data_case == 2'b100)
+        return 16'h0001;
     else
         return 16'($random);
 endfunction : get_data
