@@ -70,15 +70,15 @@ function shortint get_data();
 
     data_case = 3'($random);
 
-    if (data_case == 2'b000)
+    if (data_case == 3'b000)
         return 16'h0000;
-    else if (data_case == 2'b001)
+    else if (data_case == 3'b001)
         return 16'h1000;
-    else if (data_case == 2'b010)
+    else if (data_case == 3'b010)
 	    return 16'h3FFF;
-    else if (data_case == 2'b011)
+    else if (data_case == 3'b011)
 	    return 16'hFFFF;
-    else if (data_case == 2'b100)
+    else if (data_case == 3'b100)
         return 16'h0001;
     else
         return 16'($random);
