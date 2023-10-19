@@ -32,7 +32,6 @@ wire                 arg_parity_error;
 bit                  clk;
 bit                  rst_n;
 
-t_s_output_vect      expected;
 test_res_t           test_res = PASSED;
 
 // DUT
@@ -75,7 +74,7 @@ function shortint get_data();
     else if (data_case == 2'b001)
         return 16'h1000;
     else if (data_case == 2'b010)
-	    return 16'h3FFF;
+	    return 16'h7FFF;
     else if (data_case == 2'b011)
 	    return 16'hFFFF;
     else if (data_case == 2'b100)
@@ -106,34 +105,34 @@ function automatic t_s_output_vect get_expected(
 endfunction : get_expected
 
 // Tester
-initial begin : tester
-    rst_dut();
-    repeat (1000) begin : tester_loop
-        @(negedge clk);
-        req = 1'b0;
-        arg_a = get_data();
-        arg_a_parity = 1'($random);
-        arg_b = get_data();
-        arg_b_parity = 1'($random);
+// initial begin : tester
+//     rst_dut();
+//     repeat (1000) begin : tester_loop
+//         @(negedge clk);
+//         req = 1'b0;
+//         arg_a = get_data();
+//         arg_a_parity = 1'($random);
+//         arg_b = get_data();
+//         arg_b_parity = 1'($random);
 	    
-        expected = get_expected(arg_a, arg_a_parity, arg_b, arg_b_parity);
-        @(negedge clk);
-        req = 1'b1;
-        @(posedge ack);
-        req = 1'b0;
-        while(!result_rdy) @(negedge clk);
+//         expected = get_expected(arg_a, arg_a_parity, arg_b, arg_b_parity);
+//         @(negedge clk);
+//         req = 1'b1;
+//         @(posedge ack);
+//         req = 1'b0;
+//         while(!result_rdy) @(negedge clk);
         
-        assert(result === expected.mult_res && result_parity === expected.result_par && arg_parity_error === expected.par_error) begin
-            dprint($sformatf("Test passed for A=%0d A_parity=%0b B=%0d B_parity=%0b", arg_a, arg_a_parity, arg_b, arg_b_parity));
-        end
-        else begin
-            $display("Test FAILED for A=%0d A_parity=%0b B=%0d B_parity=%0b", arg_a, arg_a_parity, arg_b, arg_b_parity);
-            $display("Expected: %d  received: %d", expected, result);
-            test_res = FAILED;
-        end
-    end : tester_loop
-    $finish;
-end : tester
+//         assert(result === expected.mult_res && result_parity === expected.result_par && arg_parity_error === expected.par_error) begin
+//             dprint($sformatf("Test passed for A=%0d A_parity=%0b B=%0d B_parity=%0b", arg_a, arg_a_parity, arg_b, arg_b_parity));
+//         end
+//         else begin
+//             $display("Test FAILED for A=%0d A_parity=%0b B=%0d B_parity=%0b", arg_a, arg_a_parity, arg_b, arg_b_parity);
+//             $display("Expected: %d  received: %d", expected, result);
+//             test_res = FAILED;
+//         end
+//     end : tester_loop
+//     $finish;
+// end : tester
 
 // reset task
 task rst_dut();
@@ -162,5 +161,64 @@ function void print_test_res (test_res_t res);
     else                $display ("|           Test FAILED           |");
     					$display ("|---------------------------------|");
 endfunction
+
+/* coverage */
+
+covergroup cg_parities;
+
+    option.name = "cg_parities";
+
+
+
+endgroup
+
+//cg_parities v_cg_parities;
+
+initial begin : coverage
+
+    //v_cg_parities = new();
+    
+    forever begin @(posedge clk);
+        
+    end
+
+/* scoreboard */
+
+typedef struct packed {
+    bit signed   [15:0]  arg_a;
+    bit                  arg_a_parity;
+    bit signed   [15:0]  arg_b;
+    bit                  arg_b_parity;
+} t_data_packet;
+
+t_data_packet q_sb_data [$];
+bit req_prev;
+
+always @(posedge clk) begin : sb_fetch
+    if(req == 1 && req_prev == 0) begin
+        q_sb_data.push_front(
+                t_data_packet'({arg_a, arg_a_parity, arg_b, arg_b_parity})
+            );
+    end
+    req_prev <= req;
+end : sb_fetch
+
+always @(negedge clk) begin
+    if(result_rdy) begin
+        t_data_packet   dp;
+        t_s_output_vect expected;
+
+        dp = q_sb_data.pop_back();
+        expected = get_expected(dp.arg_a, dp.arg_a_parity, dp.arg_b, dp.arg_b_parity);
+        
+        assert(result === expected.mult_res && result_parity === expected.result_par && arg_parity_error === expected.par_error) begin
+            dprint($sformatf("Test passed for A=%0d A_parity=%0b B=%0d B_parity=%0b", dp.arg_a, dp.arg_a_parity, dp.arg_b, dp.arg_b_parity));
+        end
+        else begin
+            test_res = FAILED;
+            $error("%0t Test FAILED for A=%0d A_parity=%0b B=%0d B_parity=%0b\nExpected: (MR: %d, PAR_ERR: %b, RES_PAR %b)  received: (MR: %d, PAR_ERR: %b, RES_PAR %b)", $time, arg_a, arg_a_parity, arg_b, arg_b_parity, expected.mult_res, expected.par_error, expected.result_par, result, arg_parity_error, result_parity);
+        end
+    end
+end
 
 endmodule : top
