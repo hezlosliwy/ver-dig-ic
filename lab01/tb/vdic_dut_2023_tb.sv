@@ -110,19 +110,17 @@ initial begin : tester
     rst_dut();
     repeat (1000) begin : tester_loop
         @(negedge clk);
-        req = 1'b0;
+        req = 1'b1;
         arg_a = get_data();
         arg_a_parity = 1'($random);
         arg_b = get_data();
         arg_b_parity = 1'($random);
 	    
         expected = get_expected(arg_a, arg_a_parity, arg_b, arg_b_parity);
-        @(negedge clk);
-        req = 1'b1;
-        @(posedge ack);
+        while(!ack) @(negedge clk);
         req = 1'b0;
         while(!result_rdy) @(negedge clk);
-        
+
         assert(result === expected.mult_res && result_parity === expected.result_par && arg_parity_error === expected.par_error) begin
             dprint($sformatf("Test passed for A=%0d A_parity=%0b B=%0d B_parity=%0b", arg_a, arg_a_parity, arg_b, arg_b_parity));
         end
