@@ -311,7 +311,7 @@ always @(negedge clk) begin
         end
         else begin
             test_res <= FAILED;
-            $error("%0t Test FAILED for A=%0d A_parity=%0b B=%0d B_parity=%0b\nExpected: (MULT_RES: %d, PAR_ERR: %b, RES_PAR %b)  received: (MR: %d, PAR_ERR: %b, RES_PAR %b)", $time, arg_a, arg_a_parity, arg_b, arg_b_parity, expected.mult_res, expected.par_error, expected.result_par, result, arg_parity_error, result_parity);
+            $error("%0t Test FAILED for A=%0d A_parity=%0b B=%0d B_parity=%0b\nExpected: (MULT_RES: %d, PAR_ERR: %b, RES_PAR %b)  received: (MR: %d, PAR_ERR: %b, RES_PAR %b)", $time, dp.arg_a, dp.arg_a_parity, dp.arg_b, dp.arg_b_parity, expected.mult_res, expected.par_error, expected.result_par, result, arg_parity_error, result_parity);
         end
     end
 end
