@@ -73,7 +73,7 @@ function shortint get_data();
     if (data_case == 3'b000)
         return 16'h0000;
     else if (data_case == 3'b001)
-        return 16'h1000;
+        return 16'h8000;
     else if (data_case == 3'b010)
 	    return 16'h3FFF;
     else if (data_case == 3'b011)
