@@ -29,6 +29,7 @@ endfunction : get_data
 /* Tester */
 initial begin : tester
     bfm.rst_dut();
+    bfm.rst_dut();
     repeat (1000) begin : tester_loop
 	    parity_mode = 2'($random);
         data_pkt.arg_a = get_data();
