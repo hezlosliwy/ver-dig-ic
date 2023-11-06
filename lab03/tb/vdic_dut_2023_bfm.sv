@@ -55,10 +55,13 @@ task send2dut(
 	    @(negedge clk);
     end
 	req = 1'b0;
-    while(ack) begin
+    while(ack !== 0) begin
 	    timeout--;
 	    @(negedge clk);
-	    if(timeout==0) break;
+	    if(timeout==0) begin
+		    dprint("Data sending timeout!");
+		    break;
+	    end
     end
 
 endtask : send2dut
