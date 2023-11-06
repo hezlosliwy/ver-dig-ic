@@ -42,6 +42,7 @@ endtask : rst_dut
 task send2dut(
 	input t_data_packet  s_data
 );
+    automatic int timeout = 1000;
 
 	arg_a = s_data.arg_a;
 	arg_a_parity = s_data.arg_a_parity;
@@ -53,7 +54,9 @@ task send2dut(
     end
 	req = 1'b0;
     while(ack) begin
+	    timeout--;
 	    @(negedge clk);
+	    if(timeout==0) break;
     end
 
 endtask : send2dut
