@@ -34,6 +34,8 @@ end
 task rst_dut();
     dprint($sformatf("%0t DEBUG: reset_dut", $time));
     req   = 1'b0;
+	rst_n = 1'b1;
+    @(negedge clk);
     rst_n = 1'b0;
     @(negedge clk);
     rst_n = 1'b1;
@@ -79,13 +81,14 @@ endtask : get_data_posedge
 task get_result(
 	output t_s_output_vect s_result
 );
-    while(!result_rdy) begin
+    while(result_rdy !== 1) begin
 	    @(negedge clk);
     end
+    dprint("RESULT READY!!!");
     s_result.mult_res = result;
     s_result.result_par = result_parity;
     s_result.par_error = arg_parity_error;
-    while(result_rdy) begin
+    while(result_rdy !== 0) begin
 	    @(negedge clk);
     end
 endtask : get_result
