@@ -116,7 +116,6 @@ cg_parities v_cg_parities;
 cg_data v_cg_data;
 
 initial begin : coverage
-	#1
     v_cg_parities = new();
 	v_cg_data = new();
     forever begin 

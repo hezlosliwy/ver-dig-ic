@@ -33,7 +33,6 @@ endfunction : get_expected
 t_data_packet q_sb_data [$];
 
 initial begin : sb_fetch
-	#1
 	forever begin
 		t_data_packet dp;
 		bfm.get_data_posedge(dp);
@@ -42,7 +41,6 @@ initial begin : sb_fetch
 end : sb_fetch
 
 initial begin
-	#1
 	forever begin
 		t_s_output_vect s_result;
 		t_data_packet   dp;
