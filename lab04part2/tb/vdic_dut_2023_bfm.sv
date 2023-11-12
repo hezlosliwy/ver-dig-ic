@@ -1,6 +1,6 @@
 interface vdic_dut_2023_bfm;
 
-import vdic_dut_2023_pkg::*;
+import misc_pkg::*;
 
 bit                  clk;
 bit                  rst_n;

@@ -1,9 +1,7 @@
 module top;
-	
+import vdic_dut_2023_pkg::*;
+
 vdic_dut_2023_bfm bfm();
-tpgen tpgen_i (bfm);
-coverage coverage_i (bfm);
-scoreboard scoreboard_i(bfm);
 
 vdic_dut_2023 DUT (
     .clk(bfm.clk),
@@ -19,6 +17,14 @@ vdic_dut_2023 DUT (
     .result_rdy(bfm.result_rdy),
     .arg_parity_error(bfm.arg_parity_error)
 );
+
+testbench testbench_h;
+
+initial begin
+    testbench_h = new(bfm);
+    testbench_h.execute();
+    $finish;
+end
 
 endmodule : top
 
