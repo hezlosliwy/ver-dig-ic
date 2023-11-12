@@ -8,3 +8,5 @@ cov_work
 *.pb
 *.key
 .project
+*.md
+*.zip
