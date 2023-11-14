@@ -5,4 +5,6 @@ package shape_pkg;
         real y;
     } point;
 
+	typedef enum {CIRCLE, TRIANGLE, RECTANGLE, POLYGON, NO_SHAPE} e_shape;
+
 endpackage

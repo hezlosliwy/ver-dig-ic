@@ -17,6 +17,7 @@ virtual class shape_c;
     function void print();
 	    real area;
         string area_s;
+	    $display("--------------------------------------------------------------------------------");
         $display("This is: %s", name);
         foreach(points[i]) $display("(%0.2f, %0.2f)", points[i].x, points[i].y);
         area = get_area();

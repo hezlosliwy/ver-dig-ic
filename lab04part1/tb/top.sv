@@ -6,7 +6,8 @@ module top;
     initial begin
         int fd;
         point point_que[$];
-	   	
+	   	e_shape ret_shape;
+	  	
         fd = $fopen("../tb/lab04part1_shapes.txt", "r");
         if(fd==0) begin
             $display("File not found: %0d", fd);
@@ -45,19 +46,22 @@ module top;
 
             end
             
-            tmp_shape = shape_factory::make_shape(point_que);
-            case (point_que.size())
-	            2: begin
+            tmp_shape = shape_factory::make_shape(point_que, ret_shape);
+            case (ret_shape)
+	            CIRCLE: begin
 	                shape_reporter#(circle_c)::set_storage(circle_c'(tmp_shape));
 	            end
-	            3: begin
+	            TRIANGLE: begin
 	                shape_reporter#(triangle_c)::set_storage(triangle_c'(tmp_shape));
 	            end
-	            4: begin
+	            RECTANGLE: begin
 	                shape_reporter#(rectangle_c)::set_storage(rectangle_c'(tmp_shape));
 	            end
-	            default: begin
+	            POLYGON: begin
 	                shape_reporter#(polygon_c)::set_storage(polygon_c'(tmp_shape));
+	            end
+	            default: begin
+		           	$display("strange figure");
 	            end
             endcase
             point_que.delete();
