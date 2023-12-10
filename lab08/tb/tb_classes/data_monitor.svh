@@ -29,10 +29,13 @@ class data_monitor extends uvm_component;
 //------------------------------------------------------------------------------
     function void build_phase(uvm_phase phase);
 
-        if(!uvm_config_db #(virtual vdic_dut_2023_bfm)::get(null, "*","bfm", bfm))
-            `uvm_fatal("DATA Monitor", "Failed to get BFM")
+	    vdic_dut_2023_agent_config vdic_dut_2023_agent_config_h;
 
-        bfm.data_monitor_h = this;
+        if(!uvm_config_db #(vdic_dut_2023_agent_config)::get(this, "","config", vdic_dut_2023_agent_config_h))
+            `uvm_fatal("DRIVER", "Failed to get config");
+
+        vdic_dut_2023_agent_config_h.bfm.data_monitor_h = this;
+
         ap = new("ap",this);
     endfunction : build_phase
 

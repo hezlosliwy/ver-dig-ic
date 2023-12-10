@@ -32,6 +32,4 @@ class dual_test extends uvm_test;
         this.print(uvm_default_table_printer);
     endfunction : start_of_simulation_phase
 
-
-
 endclass
