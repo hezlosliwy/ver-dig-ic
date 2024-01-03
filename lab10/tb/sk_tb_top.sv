@@ -2,7 +2,7 @@
 // Created by Stanislaw Klat on Wed Jan 03 20:41:39 CET 2024
 //----------------------------------------------------------------------
 
-`include "dut.v"
+`include "dut.sv"
 `include "sk_pkg.sv"
 `include "sk_test_pkg.sv"
 
@@ -26,7 +26,16 @@ module sk_tb_top;
     // HINT Here you connect dut signals to agent interfaces.
     //
     // For example:
-    .data(mult_vif.data)
+    .arg_a(mult_vif.arg_a),
+    .arg_a_parity(mult_vif.arg_a_parity),
+    .arg_b(mult_vif.arg_b),
+    .arg_b_parity(mult_vif.arg_b_parity),
+    .req(mult_vif.req),
+    .ack(mult_vif.ack),
+    .result(mult_vif.result),
+    .result_parity(mult_vif.result_parity),
+    .result_rdy(mult_vif.result_rdy),
+    .arg_parity_error(mult_vif.arg_parity_error)
   );
 
   initial begin

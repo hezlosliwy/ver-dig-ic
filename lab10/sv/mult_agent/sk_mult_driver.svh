@@ -90,10 +90,14 @@ class sk_mult_driver extends uvm_driver#(sk_mult_item);
 
   // Resets signals.
   virtual protected task reset_signals();
-    // TODO  sk_mult_driver: Implement reset_signals()
+    // XXX  sk_mult_driver: Implement reset_signals()
     //
     // For example:
-    m_mult_vif.data <= 'hz;
+    m_mult_vif.arg_a <= 'h0;
+	m_mult_vif.arg_a_parity <= 'h0;
+	m_mult_vif.arg_b <= 'h0;
+	m_mult_vif.arg_b_parity <= 'h0;
+	m_mult_vif.req <= 'b0;
   endtask : reset_signals
 
   // Resets driver.
@@ -103,10 +107,8 @@ class sk_mult_driver extends uvm_driver#(sk_mult_item);
 
   // Drives item.
   virtual protected task drive_item (sk_mult_item item);
-    // TODO sk_mult_driver: Implement drive_item()
-    // For example:
-    m_mult_vif.data <= item.m_data;
-    @(posedge m_mult_vif.clock);
+    // XXX sk_mult_driver: Implement drive_item()
+    m_mult_vif.send2dut(item.a, item.b, item.a_parity, item.b_parity);
   endtask : drive_item
 
 endclass : sk_mult_driver

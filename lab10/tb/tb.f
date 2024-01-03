@@ -1,6 +1,7 @@
 +incdir+.
 +incdir+../sv
 
+../../common/vdic_dut_2023.svp
 ./sk_tb_top.sv
 
 +nowarn+DSEMEL

@@ -8,20 +8,22 @@
 // The sk mult item.
 class sk_mult_item extends uvm_sequence_item;
 
-  // TODO sk_mult_item: Define fields
+  // XXX sk_mult_item: Define fields
   // For example:
-  rand int unsigned m_data;
+  rand bit signed   [15:0]  a;
+  rand bit                  a_parity;
+  rand bit signed   [15:0]  b;
+  rand bit                  b_parity;
 
-  // TODO sk_mult_item: Define default constraints
-  // For example:
-  constraint c_data {
-    m_data inside {1,2,4,8};
-  }
+  // XXX sk_mult_item: Define default constraints
+  // base is random
 
   `uvm_object_utils_begin(sk_mult_item)
-    // TODO sk_mult_item: Register fields
-    // For example:
-    `uvm_field_int(m_data, UVM_DEFAULT)
+  	  // XXX sk_mult_item: Register fields (ctrl + space)
+	  `uvm_field_int(a, UVM_ALL_ON | UVM_DEC)
+	  `uvm_field_int(a_parity, UVM_ALL_ON | UVM_DEC)
+	  `uvm_field_int(b, UVM_ALL_ON | UVM_DEC)
+	  `uvm_field_int(b_parity, UVM_ALL_ON | UVM_DEC)
   `uvm_object_utils_end
 
   // new - constructor

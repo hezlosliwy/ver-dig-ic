@@ -93,11 +93,15 @@ class sk_mult_monitor extends uvm_monitor;
 
   // Collects an item.
   virtual protected task collect_item();
-    // TODO sk_mult_monitor: Implement collect_item()
+    // XXX sk_mult_monitor: Implement collect_item()
     // For example:
     void'(this.begin_tr(m_collected_item));
-    @(posedge m_mult_vif.clock);
-    m_collected_item.m_data = m_mult_vif.data;
+    while (m_mult_vif.req !== 1'b1) @(posedge m_mult_vif.clock);
+	m_collected_item.a = m_mult_vif.arg_a;
+	m_collected_item.a_parity = m_mult_vif.arg_a_parity;
+	m_collected_item.b = m_mult_vif.arg_b;
+	m_collected_item.b_parity = m_mult_vif.arg_b_parity;
+    while (m_mult_vif.req !== 1'b0) @(posedge m_mult_vif.clock);
     this.end_tr(m_collected_item);
   endtask : collect_item
 
